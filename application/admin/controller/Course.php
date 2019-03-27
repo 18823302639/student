@@ -7,7 +7,8 @@
  */
 
 namespace app\admin\controller;
-
+use think\Db;
+use think\Request;
 
 class Course extends Common
 {
@@ -24,6 +25,10 @@ class Course extends Common
 
     public function course_add()
     {
+        if(Request::instance()->isPost()){
+            $data = input("post.");
+            print_r($data);die;
+        }
         return $this->fetch("admin/course_add");
     }
 
@@ -36,4 +41,14 @@ class Course extends Common
         return $this->fetch("admin/course_add");
     }
 
+    //检查身份证是否存在相同
+    public function tea_sid(){
+        $data = input("post.tea_sid");
+        $res = Db::table("teacher")->where("tea_sid",$data)->find();
+        if($res){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
