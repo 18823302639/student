@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"D:\myphp_www\WWW\Student\public/../application/admin\view\admin\login.html";i:1553509583;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:74:"D:\myphp_www\WWW\Student\public/../application/admin\view\admin\login.html";i:1553571149;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -71,8 +71,8 @@
        dataType:"JSON",
        data:data,
        success:function(res) {
-          layer.msg(res);
-           // window.setTimeout("window.location=''",2000);
+          layer.msg("登录成功");
+           window.setTimeout("window.location='index'",2000);
        },
         error:function (res) {
             layer.msg(res);

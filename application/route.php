@@ -12,3 +12,5 @@ use think\Route;
 
 Route::rule("/","index");
 Route::rule("login","admin/Admin/login");
+Route::rule("unlogin","admin/Admin/unlogin");
+Route::rule("index","admin/Admin/index");

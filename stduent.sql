@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-03-27 16:20:43
+Date: 2019-03-27 17:47:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -106,7 +106,7 @@ CREATE TABLE `teacher` (
   `tea_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '教师id',
   `tea_sid` char(20) DEFAULT NULL COMMENT '教师身份证',
   `teacher_user` char(20) DEFAULT NULL COMMENT '教师名称',
-  `reacher_pwd` char(32) DEFAULT NULL COMMENT '教师密码',
+  `teacher_pwd` char(32) DEFAULT NULL COMMENT '教师密码',
   PRIMARY KEY (`tea_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='教师表';
 
