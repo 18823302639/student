@@ -9,21 +9,22 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>授课老师姓名：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" name="teacher_user">
+                <input type="text" class="input-text" value="{$data.teacher_user}" placeholder="" name="teacher_user" >
+                <input type="hidden" name="tea_id" value="{$data.tea_id}">
             </div>
         </div>
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>身份证信息：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" name="tea_sid" id="tea_sid">
+                <input type="text" class="input-text" value="{$data.tea_sid}" placeholder="" name="tea_sid" id="tea_sid">
             </div>
         </div>
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>密码：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" value="" placeholder="" name="teacher_pwd">
+                <input type="password" class="input-text" value="{$data.teacher_pwd}" placeholder="" name="teacher_pwd">
             </div>
         </div>
 
@@ -45,10 +46,10 @@
 <script type="text/javascript" src="__HUI__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
 <script type="text/javascript" src="__HUI__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(function() {
             $("#form_course_add").validate({
+                focusInvalid:false,
                 onkeyup : false,
-                // focusInvalid:false,
                 rules: {
                     teacher_user: {
                         required: true,
@@ -57,7 +58,7 @@
                     tea_sid: {
                         required: true,
                         rangelength: [8, 20],
-                        /*remote: {
+                       /* remote: {
                             url: "{:url('course/tea_sid')}",
                             type: "post",
                             dataType: "josn",
@@ -81,20 +82,17 @@
                     tea_sid: {
                         required: "用户名必须填写",
                         rangelength: "请输入正确的用户名",
-                        // remote :"你好"
+                        // remote : ""
                     },
                     teacher_pwd: {
                         required: "请输入密码"
                     }
                 },
-                submitHandler:function(form) {
-
-                }
-                submitHandler: function () {
+                submitHandler:function () {
                     var data = $("#form_course_add").serialize();
                     console.log(data);
                     $.ajax({
-                        url:"{:url('course/course_add')}",
+                        url:"{:url('course/course_edit')}",
                         type:"POST",
                         dataType:"JSON",
                         data:data,
@@ -102,7 +100,10 @@
                             console.log(res)
                             if(res == true){
                                 layer.msg("提交成功");
-                                $("#form_course_add input").val("");
+                                // $("#form_course_add input").va("");
+                                window.setTimeout("window.locatioln='index'",2000);
+                            }else if(res == false){
+                                layer.msg("您的身份证信息有误，请重新填写");
                             }else{
                                 layer.msg(res);
                             }
