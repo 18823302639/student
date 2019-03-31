@@ -22,7 +22,6 @@ class Course extends Common
         return $this->fetch("admin/course_list");
     }
 
-
     public function course_add()
     {
         if(Request::instance()->isPost()){
@@ -54,7 +53,38 @@ class Course extends Common
     }
 
     public function course_del(){
+        $tea_id = input("param.tea_id");
+        $arr    = Db::table("teacher")->delete($tea_id);
+        if($arr){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    public function curr_list(){
+        $arr = Db::table("teacher_list")
+                    ->alias("tea_list")
+                    ->join("teacher tea","tea_list.tea_id=tea.tea_id")
+                    ->field("tea_list.*,tea.teacher_user")
+                    ->select();
+        $this->assign("arr",$arr);
+        return $this->fetch("admin/curr_list");
+    }
+
+    public function curr_add(){
+        if(Request::instance()->isAjax()){
+            $data = input("post.");
+            $res  = Db::table("teacher_list")->insert($data);
+            if($res){
+                return true;
+            }else{
+                return $msg = "提交失败";
+            }
+        }
+        $arr = Db::table("teacher")->select();
+        $this->assign("arr",$arr);
+        return $this->fetch("admin/curr_add");
     }
 
     public function teacher_list(){

@@ -25,6 +25,7 @@
 		1、tea_list_id   int  课程id
 		2、tea_id         int   教师id
 		3、list_user      char(50)   课程名称
+		4、list_time      init       上课时间
 	
 	教师作业表teacher_task
 		1、tea_task_id   int    作业id
