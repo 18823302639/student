@@ -62,16 +62,20 @@ class Course extends Common
         }
     }
 
+    //所有课程列表
     public function curr_list(){
-        $arr = Db::table("teacher_list")
-                    ->alias("tea_list")
-                    ->join("teacher tea","tea_list.tea_id=tea.tea_id")
-                    ->field("tea_list.*,tea.teacher_user")
+        $arr = Db::table("teacher")
+                    ->alias("tea")
+                    ->join("teacher_list tea_list","tea.tea_id=tea_list.tea_id")
+                    ->join("teacher_task tea_task","tea_task.tea_list_id=tea_list.tea_list_id","LEFT")
+                    ->field("tea_list.*,tea.teacher_user,tea_task.tea_task_user,tea_task.tea_task_add,tea_task.tea_task_id")
+//                    ->fetchSql(true)
                     ->select();
         $this->assign("arr",$arr);
         return $this->fetch("admin/curr_list");
     }
 
+    //课程添加
     public function curr_add(){
         if(Request::instance()->isAjax()){
             $data = input("post.");
@@ -86,6 +90,20 @@ class Course extends Common
         $this->assign("arr",$arr);
         return $this->fetch("admin/curr_add");
     }
+
+    public function curr_del(){
+        $id = input("param.id");
+        if(!empty($id)){
+            $res = Db::table('teacher_task')->delete($id);
+            return $res ? true : false ;
+        }
+        else{
+            return $msg = "您还没有添加作业呢~~~";
+        }
+
+    }
+
+
 
     public function teacher_list(){
         return $this->fetch("admin/teacher_list");
@@ -108,4 +126,5 @@ class Course extends Common
         $res = Db::table("teacher")->where("tea_sid",$data)->find();
         return $res ? true : false ;
     }
+
 }

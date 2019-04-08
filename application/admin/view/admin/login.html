@@ -62,12 +62,10 @@
 <script>
   function login(){
       var data = $("form").serialize();
-      // var url  = "{:url('admin/login')}";
-      console.log(111);
       var url = "login";
     $.ajax({
        url:url,
-       type:"POST",
+       type:"post",
        dataType:"JSON",
        data:data,
        success:function(res) {
