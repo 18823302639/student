@@ -68,7 +68,7 @@ class Course extends Common
                     ->alias("tea")
                     ->join("teacher_list tea_list","tea.tea_id=tea_list.tea_id")
                     ->join("teacher_task tea_task","tea_task.tea_list_id=tea_list.tea_list_id","LEFT")
-                    ->field("tea_list.*,tea.teacher_user,tea_task.tea_task_user,tea_task.tea_task_add,tea_task.tea_task_id")
+                    ->field("tea_list.*,tea.teacher_user,tea_task.tea_task_user,tea_task.tea_task_add,tea_task.tea_task_id,tea_task.tea_task_ans")
 //                    ->fetchSql(true)
                     ->select();
         $this->assign("arr",$arr);
@@ -94,8 +94,15 @@ class Course extends Common
     public function curr_del(){
         $id = input("param.id");
         if(!empty($id)){
-            $res = Db::table('teacher_task')->delete($id);
-            return $res ? true : false ;
+            $arr  = Db::table("teacher_task")->where("tea_task_id",$id)->find();
+            $filees = ROOT_PATH . 'public' . DS . 'uploads' . DS .$arr["tea_task_add"];
+            if(!file_exists($filees)){
+                $res = Db::table('teacher_task')->delete($id);
+            }
+            if(unlink($filees)) {
+                $res = Db::table('teacher_task')->delete($id);
+            }
+            return $res;
         }
         else{
             return $msg = "您还没有添加作业呢~~~";

@@ -38,10 +38,11 @@
                 <th width="80">ID</th>
                 <th width="100">分类</th>
                 <th width="150">课程名称</th>
-                <th width="250">授课老师</th>
-                <th width="250">上课时间</th>
+                <th width="200">授课老师</th>
+                <th width="200">上课时间</th>
                 <th width="250">作业</th>
-                <th width="100">操作</th>
+                <th width="250">答案</th>
+                <th width="150">操作</th>
             </tr>
             </thead>
             <tbody>
@@ -65,6 +66,7 @@
                         </span>
                     </form>
                     {else /}
+                    <a ><p style="float:left;line-height:30px;color:red;">您还没有上传作业</p></a>
                     <form action="" enctype="multipart/form-data" id="uploadImg">
                         <span class="btn-upload">
                           <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
@@ -75,8 +77,32 @@
                     </form>
                     {/if}
                 </td>
+                <td class="text-c">
+                    {if condition="$vo.tea_task_ans neq '' "}
+                    <a href="/uploads/{$vo.tea_task_ans}"><p style="float:left;line-height:30px;">{$vo.tea_task_ans}</p></a>
+                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" id="uploadImg1">
+                        <span class="btn-upload">
+                          <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 重新上传</a>
+                          <input type="file" multiple name="fileans" class="input-file" id="fileans" >
+                            <input type="hidden" name="tea_list_id" value="{$vo.tea_list_id}">
+                          <input type="hidden" name="tea_task_id" value="{$vo.tea_task_id}">
+                        </span>
+                    </form>
+                    {else /}
+
+                    <a ><p style="float:left;line-height:30px;color:red;">您还没有上传答案</p></a>
+                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" id="uploadImg1">
+                        <span class="btn-upload">
+                          <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                          <input type="file" multiple name="fileans" class="input-file" id="fileans" >
+                          <input type="hidden" name="tea_task_id" value="{$vo.tea_task_id}">
+                          <input type="hidden" name="tea_list_id" value="{$vo.tea_list_id}">
+                        </span>
+                    </form>
+                    {/if}
+                </td>
                 <td class="td-manage">
-                    <a style="text-decoration:none" onClick="curr_del('{:url("course/curr_del",["id"=>$vo.tea_task_id])}')"
+                    <a style="text-decoration:none" onClick="curr_ddel('{:url("course/curr_del",["id"=>$vo.tea_task_id])}')"
                        href="javascript:;" title="删除作业"><i class="Hui-iconfont">&#xe6de;</i></a>
                     <a style="text-decoration:none" class="ml-5" href="javascript:;" title="上传作业">
                         <i type="file" class="Hui-iconfont">&#xe63e;</i>
@@ -105,7 +131,8 @@
 <script type="text/javascript">
    //文件上传
     $(function(){
-        $("input[type='file']").on("change",function(){
+        $("input[name='file']").on("change",function(){
+            console.log(111)
            var file = this.files[0];
            var tea_task_id = $("input[name='tea_task_id']").val();
            var tea_list_id = $("input[name='tea_list_id']").val();
@@ -144,6 +171,47 @@
             });
         });
     })
+   $(function(){
+       $("input[name='fileans']").on("change",function(){
+           console.log(2)
+           var file = this.files[0];
+           var tea_task_id = $("input[name='tea_task_id']").val();
+           var tea_list_id = $("input[name='tea_list_id']").val();
+           var formData = new FormData($("#uploadImg1")[0]);
+           formData.append('file',file);
+           formData.append('tea_task_id',tea_task_id);
+           formData.append('tea_list_id',tea_list_id);
+           $.ajax({
+               url: "{:url('Common/upfile')}",
+               type: 'POST',
+               cache: false,
+               data: formData,
+               processData: false,
+               contentType: false,
+           }).done(function(res) {
+               if(res == true){
+                   layer.msg("文件上传成功")
+                   window.setInterval(window.location.replace(location.href),5500);
+               }
+               else{
+                   layer.msg(res)
+                   window.setInterval(window.location.replace(location.href),5500);
+               }
+               console.log("成功"+res)
+
+           }).fail(function(res) {
+               if(res == false){
+                   layer.msg("文件上传失败")
+                   window.setInterval(window.location.replace(location.href),5500);
+               }
+               else{
+                   layer.msg(res)
+                   window.setInterval(window.location.replace(location.href),5500);
+               }
+               console.log("失败"+res)
+           });
+       });
+   })
 </script>
 
 
@@ -159,6 +227,27 @@
     })
     ;
 
+    function curr_ddel(url){
+        layer.confirm('确认要删除作业嘛？', function (index) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+                    if (data == true) {
+                        layer.msg("删除成功");
+                        window.setInterval(window.location.reload(),2000);
+                    } else {
+                        layer.msg("删除失败");
+                        window.setInterval(window.location.reload(),2000);
+                    }
+                    // window.setInterval(window.location="",2000);
+                }
+            });
+            console.log(111)
+        });
+    }
     /*课程-添加*/
     function course_add(title, url) {
         var index = layer.open({

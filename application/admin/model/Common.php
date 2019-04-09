@@ -33,4 +33,23 @@ class Common extends Model
         }
     }
 
+    public function upfiles($file,$data,$id=''){
+        $User = new Common();
+        // 移动到框架应用根目录/public/uploads/ 目录下
+        $info = $file->validate(['size'=>156780])->move(ROOT_PATH . 'public' . DS . 'uploads');
+        if($info){
+            $data['tea_ans_user']  = $info->getSaveName();
+            if($id == ''){
+                $res = $User->save($data);
+            }
+            else{
+                $res = $User->save($data,["tea_task_id"=>$id]);
+            }
+            return $res ? true : false ;
+        }else{
+            // 上传失败获取错误信息
+            return $file->getError();
+        }
+    }
+
 }
