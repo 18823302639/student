@@ -57,7 +57,7 @@
                 <td class="text-c">
                     {if condition="$vo.tea_task_user neq '' "}
                     <a href="/uploads/{$vo.tea_task_add}"><p style="float:left;line-height:30px;">{$vo.tea_task_user}</p></a>
-                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" id="uploadImg">
+                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" >
                         <span class="btn-upload">
                           <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 重新上传</a>
                           <input type="file" multiple name="file" class="input-file" id="file" >
@@ -67,7 +67,7 @@
                     </form>
                     {else /}
                     <a ><p style="float:left;line-height:30px;color:red;">您还没有上传作业</p></a>
-                    <form action="" enctype="multipart/form-data" id="uploadImg">
+                    <form action="" enctype="multipart/form-data" >
                         <span class="btn-upload">
                           <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
                           <input type="file" multiple name="file" class="input-file" id="file" >
@@ -80,18 +80,18 @@
                 <td class="text-c">
                     {if condition="$vo.tea_task_ans neq '' "}
                     <a href="/uploads/{$vo.tea_task_ans}"><p style="float:left;line-height:30px;">{$vo.tea_task_ans}</p></a>
-                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" id="uploadImg1">
+                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" >
                         <span class="btn-upload">
                           <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 重新上传</a>
                           <input type="file" multiple name="fileans" class="input-file" id="fileans" >
-                            <input type="hidden" name="tea_list_id" value="{$vo.tea_list_id}">
+                           <input type="hidden" name="tea_list_id" value="{$vo.tea_list_id}">
                           <input type="hidden" name="tea_task_id" value="{$vo.tea_task_id}">
                         </span>
                     </form>
                     {else /}
 
                     <a ><p style="float:left;line-height:30px;color:red;">您还没有上传答案</p></a>
-                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" id="uploadImg1">
+                    <form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" >
                         <span class="btn-upload">
                           <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
                           <input type="file" multiple name="fileans" class="input-file" id="fileans" >
@@ -132,10 +132,11 @@
    //文件上传
     $(function(){
         $("input[name='file']").on("change",function(){
-            console.log(111)
            var file = this.files[0];
-           var tea_task_id = $("input[name='tea_task_id']").val();
-           var tea_list_id = $("input[name='tea_list_id']").val();
+           // var tea_task_id = $("input[name='tea_task_id']").val();
+           // var tea_list_id = $("input[name='tea_list_id']").val();
+            var tea_task_id = $(this).next().val();
+            var tea_list_id = $(this).next().next().val();
            var formData = new FormData($("#uploadImg")[0]);
            formData.append('file',file);
             formData.append('tea_task_id',tea_task_id);
@@ -171,12 +172,15 @@
             });
         });
     })
+
    $(function(){
        $("input[name='fileans']").on("change",function(){
            console.log(2)
            var file = this.files[0];
-           var tea_task_id = $("input[name='tea_task_id']").val();
-           var tea_list_id = $("input[name='tea_list_id']").val();
+           var tea_task_id = $(this).next().val();
+           var tea_list_id = $(this).next().next().val();
+           // alert(tea_task_id);
+           // var tea_list_id = $("#uploadImg1 input[name='tea_list_id']").val();
            var formData = new FormData($("#uploadImg1")[0]);
            formData.append('file',file);
            formData.append('tea_task_id',tea_task_id);
