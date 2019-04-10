@@ -17,13 +17,14 @@
 			<thead>
 				<tr class="text-c">
 					<th width="25"><input type="checkbox" name="" value=""></th>
-					<th width="80">ID</th>
-					<th width="150">课程</th>
-					<th width="100">授课老师</th>
-					<th width="100">学生名称</th>
+					<th width="50">ID</th>
+					<th width="80">课程</th>
+					<th width="80">授课老师</th>
+					<th width="80">学生名称</th>
 					<th width="120">上课时间</th>
-					<th width="120">作业</th>
-					<th width="120">答案</th>
+					<th width="150">教师布置作业</th>
+					<th width="150">学生提交作业</th>
+					<th width="150">答案</th>
 					<th width="120">操作</th>
 				</tr>
 			</thead>
@@ -38,17 +39,35 @@
 					<td>{$vo.list_time}</td>
 					<td>
 						{if condition="$vo.tea_task_user eq '' "}
-							老师还没有上传作业
+						<span class="label label-success radius">老师还没有上传作业</span>
 						{else/}
-							<a href="/uploads/{$vo.tea_task_add}" class="btn btn-primary radius"  onclick="downloadFile()" ><i class="Hui-iconfont"></i> {$vo.tea_task_user}</a>
+							<a href="/uploads/{$vo.tea_task_add}" class="btn btn-primary radius"  download="{$vo.tea_task_user}" ><i class="Hui-iconfont"></i> {$vo.tea_task_user}</a>
 						{/if}
-
+					</td>
+					<td>
+						{if condition="$vo.tea_task_user neq '' "}
+						<a href="/uploads/{$vo.tea_task_ans}" download="/uploads/{$vo.tea_task_ans}"><p style="float:left;line-height:30px;">{$vo.tea_task_ans}</p></a>
+						<form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" >
+                        <span class="btn-upload">
+                          <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 重新上传</a>
+                          <input type="file" multiple name="fileans" class="input-file" id="fileans" >
+                        </span>
+						</form>
+						{else /}
+						<a ><p style="float:left;line-height:30px;color:red;">您还没有上传答案</p></a>
+						<form style="float:right;margin-right:25px;" action="" enctype="multipart/form-data" >
+                        <span class="btn-upload">
+                          <a href="javascript:void();" class="btn btn-primary radius btn-upload"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+                          <input type="file" multiple name="fileans" class="input-file" id="fileans" >
+                        </span>
+						</form>
+						{/if}
 					</td>
 					<td class="td-status">
 						{if condition="$vo.tea_task_ans eq '' "}
-						老师还没有上传作业答案
+						<span class="label label-success radius">老师还没有上传作业答案</span>
 						{else/}
-						<a href="#" class="btn btn-primary radius" onclick="downloadFile()" ><i class="Hui-iconfont"></i> {$vo.tea_task_ans}</a>
+						<a href="/uploads/{$vo.tea_ans_user}" class="btn btn-primary radius" download="{$vo.tea_task_ans}" ><i class="Hui-iconfont"></i> {$vo.tea_task_ans}</a>
 						{/if}
 					</td>
 					<td class="f-14 td-manage"><a style="text-decoration:none" onClick="article_stop(this,'10001')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_edit('资讯编辑','article-add.html','10001')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> <a style="text-decoration:none" class="ml-5" onClick="article_del(this,'10001')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
@@ -65,14 +84,6 @@
 <!--请在下方写此页面业务相关的脚本-->
 
 <script type="text/javascript">
-    function downloadFile(){
-        var filename="{$vo.tea_task_ans}";
-        var a = document.createElement('a');
-        a.href="/uploads/{$vo.tea_ans_user}";
-        a.download = filename;
-        console.log(a.href)
-        a.click()
-    }
 
 $('.table-sort').dataTable({
 	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
@@ -118,52 +129,6 @@ function article_del(obj,id){
 			},
 		});		
 	});
-}
-
-/*资讯-审核*/
-function article_shenhe(obj,id){
-	layer.confirm('审核文章？', {
-		btn: ['通过','不通过','取消'], 
-		shade: false,
-		closeBtn: 0
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布', {icon:6,time:1000});
-	},
-	function(){
-		$(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
-		$(obj).remove();
-    	layer.msg('未通过', {icon:5,time:1000});
-	});	
-}
-/*资讯-下架*/
-function article_stop(obj,id){
-	layer.confirm('确认要下架吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-		$(obj).remove();
-		layer.msg('已下架!',{icon: 5,time:1000});
-	});
-}
-
-/*资讯-发布*/
-function article_start(obj,id){
-	layer.confirm('确认要发布吗？',function(index){
-		$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-		$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-		$(obj).remove();
-		layer.msg('已发布!',{icon: 6,time:1000});
-	});
-}
-/*资讯-申请上线*/
-function article_shenqing(obj,id){
-	$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">待审核</span>');
-	$(obj).parents("tr").find(".td-manage").html("");
-	layer.msg('已提交申请，耐心等待审核!', {icon: 1,time:2000});
 }
 
 </script>

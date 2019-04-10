@@ -5,6 +5,7 @@ use think\Controller;
 use think\Request;
 use think\Db;
 use think\Session;
+use app\admin\controller\Base;
 
 
 class Admin extends Controller

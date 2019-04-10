@@ -21,11 +21,11 @@ class Common extends Controller
             // 获取表单上传文件 接收参数
             $filename = $_FILES['file']['name'];
             $data['tea_task_user'] = $filename;
-            $data['tea_task_id']   = $tea_task_id;
             $data['tea_list_id']   = $tea_list_id;
             $model = new CommonAdmin();
             $file = request()->file('file');
             if (!empty($tea_task_id)) {
+                $data['tea_task_id']   = $tea_task_id;
                 $res  = Db::table("teacher_task")->where("tea_task_id",$tea_task_id)->find();
                 $filees = ROOT_PATH . 'public' . DS . 'uploads' . DS .$res["tea_task_add"];
                 if(!file_exists($filees)){
