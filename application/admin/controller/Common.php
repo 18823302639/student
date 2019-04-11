@@ -13,9 +13,11 @@ use app\admin\model\Common as CommonAdmin;
 
 class Common extends Controller
 {
-    //上传作业
+    //上传作业 uploadfile
     public function uploadfile(){
+
         if(Request::instance()->isAjax()) {
+
             $tea_task_id = input("param.tea_task_id")  ;
             $tea_list_id = input("param.tea_list_id")  ;
             // 获取表单上传文件 接收参数
@@ -25,9 +27,9 @@ class Common extends Controller
             $model = new CommonAdmin();
             $file = request()->file('file');
             if (!empty($tea_task_id)) {
-                $data['tea_task_id']   = $tea_task_id;
-                $res  = Db::table("teacher_task")->where("tea_task_id",$tea_task_id)->find();
-                $filees = ROOT_PATH . 'public' . DS . 'uploads' . DS .$res["tea_task_add"];
+                    $data['tea_task_id']   = $tea_task_id;
+                    $res  = Db::table("teacher_task")->where("tea_task_id",$tea_task_id)->find();
+                    $filees = ROOT_PATH . 'public' . DS . 'uploads' . DS .$res["tea_task_add"];
                 if(!file_exists($filees)){
                     $res = $model->uploads($file,$data,$res['tea_task_id']);
                     return $res;

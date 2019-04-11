@@ -1,0 +1,152 @@
+{extend name="layout/that_base"}
+
+<link href="lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css"/>
+
+{block name="body"}
+<div class="page-container">
+    <form class="form form-horizontal" id="form_course_add" action="" method="post" >
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用户组：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                  <select class="select" size="1" name="group_id">
+                    {volist name="arr" id="vo"}
+                        <option value="{$vo.id}" >{$vo.title}</option>
+                    {/volist}
+                  </select>
+                </span>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用户名称：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="" name="title">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>用户密码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="password" class="input-text" value="" placeholder="" name="pwd">
+            </div>
+        </div>
+
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否开启：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class=" skin-minimal">
+                    <div class="radio-box">
+                        <input type="radio" id="radio-1" name="status" value="0">
+                        <label for="radio-1">关闭</label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" id="radio-2" name="status" checked value="1">
+                        <label for="radio-2">开启</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button  class="btn btn-primary radius" type="submit"><i
+                        class="Hui-iconfont">&#xe632;</i> 保存并提交
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
+{/block}
+
+{block name="footer"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__HUI__/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="__HUI__/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="__HUI__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        })});
+
+    $(document).ready(function() {
+        /* $("#form_course_add").validate({
+             onkeyup : false,
+             // focusInvalid:false,
+             rules: {
+                 teacher_user: {
+                     required: true,
+                     rangelength: [2, 6],
+                 },
+                 tea_sid: {
+                     required: true,
+                     rangelength: [8, 20],
+                     /!*remote: {
+                         url: "{:url('course/tea_sid')}",
+                         type: "post",
+                         dataType: "josn",
+                         data: {
+                             tea_sid: function () {
+                                 return $("#tea_sid").val();
+                             }
+                         }
+                     }*!/
+                 },
+                 teacher_pwd: {
+                     required: true,
+                     rangelength: [6, 20]
+                 }
+             },
+             message: {
+                 teacher_user: {
+                     required: "用户名必须填写",
+                     rangelength: "请输入正确的用户名"
+                 },
+                 tea_sid: {
+                     required: "用户名必须填写",
+                     rangelength: "请输入正确的用户名",
+                     // remote :"你好"
+                 },
+                 teacher_pwd: {
+                     required: "请输入密码"
+                 }
+             },
+             submitHandler: function () {
+                 var data = $("#form_course_add").serialize();
+                 console.log(data);
+                 $.ajax({
+                     url:"{:url('course/course_add')}",
+                     type:"POST",
+                     dataType:"JSON",
+                     data:data,
+                     success: function(res){
+                         console.log(res)
+                         if(res == true){
+                             layer.msg("提交成功");
+                             $("#form_course_add input").val("");
+                         }else{
+                             layer.msg(res);
+                         }
+                     },
+                     error: function(res){
+                         console.log(res)
+                         layer.msg("提交失败");
+                     }
+                 });
+             }
+
+
+         });*/
+    });
+
+
+
+</script>
+{/block}

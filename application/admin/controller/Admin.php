@@ -45,7 +45,8 @@ class Admin extends Controller
                 ->where("admin_pwd",$data['admin_pwd'])
                 ->find();
             if($res){
-                Session::set("name",$data['admin_user']);
+                Session::set("name",$res['admin_user']);
+                Session::set("id",$res['admin_id']);
                 return true;
             }
             else{
